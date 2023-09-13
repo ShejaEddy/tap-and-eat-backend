@@ -7,6 +7,7 @@ use App\Student;
 use App\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class StudentController extends Controller
 {
@@ -71,13 +72,27 @@ class StudentController extends Controller
 
     public function opayPaymentResponse(Request $request)
     {
-        $trans = Transaction::where("transaction_id", $request["referenceId"])->first();
+        Log::info("CALLBACK RESPONSE", $request->all());
+        $refId = $request->data->referenceId;
+        $status = $request->data->status;
+        $event_kind = $request->event_kind;
 
-        $status = strtoupper($request["status"]);
-        if ($status != "SUCCESS") {
+        if($event_kind != "transaction:processed"){
+            return response(["message" => "Ok"]);
+        }
+
+        $trans = Transaction::where("transaction_id", $refId)->first();
+
+        $status = strtolower($status);
+
+        if ($status == "pending") {
+            return response(["message" => "Transaction pending"]);
+        }
+
+        if ($status != "successful") {
             $trans->status = "FAILED";
             $trans->save();
-            return response(["message" => "transaction failed"]);
+            return response(["message" => "Transaction failed"]);
         }
         $trans->status = "SUCCESS";
         $student = Student::find($trans->student_id);
