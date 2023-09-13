@@ -24,8 +24,8 @@ class HomeController extends Controller
     public function index()
     {
         $totalFailedTransactions = \App\Transaction::where('status', 'FAILED')->count();
-        $todayPendingTransactions = \App\Transaction::where('status', 'PENDING')->sum();
-        $totalSuccessfulTransactions = \App\Transaction::where('status', 'SUCCESS')->sum();
+        $todayPendingTransactions = \App\Transaction::where('status', 'PENDING')->count();
+        $totalSuccessfulTransactions = \App\Transaction::where('status', 'SUCCESS')->count();
         $totalIncome = \App\Transaction::where('status', 'SUCCESS')->sum('amount');
         $studentsNumber = \App\Student::count();
         return view('home', compact(
