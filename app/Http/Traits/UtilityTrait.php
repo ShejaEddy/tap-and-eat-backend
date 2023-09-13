@@ -41,7 +41,7 @@ trait UtilityTrait
     {
         $data = [
             "phoneNumber" => "25" . $phoneNumber,
-            "amount" => $amount,
+            "amount" => +$amount,
             "description" => "Payment",
             "callbackUrl" => env("BACKEND_HTTPS_URL") . "/api/opay/payment-response",
             "referenceId" => $tx_ref,
