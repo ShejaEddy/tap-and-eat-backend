@@ -60,7 +60,7 @@ trait UtilityTrait
 
         Log::info("MOMO PAYMENT AUTH RESPONSE: ", ['result' => $auth_result->body(), 'status' => $auth_result->status()]);
 
-        $access_token = json_decode($auth_result->body())->access_token;
+        $access_token = json_decode($auth_result->body())->access;
 
         $URL = "https://payments.paypack.rw/api/transactions/cashout";
         $result = Http::withHeaders(
