@@ -70,14 +70,14 @@ trait UtilityTrait
         Log::info("MOMO PAYMENT RESPONSE: ", ['result' => $result->body(), 'status' => $result->status()]);
 
         // check if request was successful
-        if ($result->status() != 201) {
+        if ($result->status() != 200) {
             return false;
         }
 
-        $body = json_decode($result->body());
-        if ($body->statusCode != 200) {
-            return false;
-        }
+        // $body = json_decode($result->body());
+        // if ($body->statusCode != 200) {
+        //     return false;
+        // }
 
         return true;
     }
