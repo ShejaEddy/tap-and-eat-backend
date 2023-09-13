@@ -72,10 +72,11 @@ class StudentController extends Controller
 
     public function opayPaymentResponse(Request $request)
     {
-        Log::info("CALLBACK RESPONSE", $request->all());
         $refId = $request->data['ref'];
         $status = $request->data['status'];
         $event_kind = $request->event_kind;
+
+        Log::info("OPAY PAYMENT RESPONSE: ", ['refId' => $refId, 'status' => $status, 'event_kind' => $event_kind]);
 
         if($event_kind != "transaction:processed"){
             return response(["message" => "Ok"]);
