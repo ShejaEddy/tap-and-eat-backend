@@ -62,7 +62,7 @@ trait UtilityTrait
 
         $access_token = json_decode($auth_result->body())->access;
 
-        $URL = "https://payments.paypack.rw/api/transactions/cashout";
+        $URL = "https://payments.paypack.rw/api/transactions/cashin";
         $result = Http::withHeaders(
             [
                 'Content-Type' => 'application/json',
