@@ -39,7 +39,7 @@ trait UtilityTrait
 
     public function momoPay($tx_ref, $amount, $phoneNumber)
     {
-        $URL = " https://api.pay.ishema.rw/api/v1/transactions/initialize";
+        $URL = "https://api.pay.ishema.rw/api/v1/transactions/initialize";
         $result = Http::withHeaders(
             [
                 'apiKey' => env("OPAY_API_KEY"),
