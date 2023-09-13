@@ -71,8 +71,10 @@ class StudentController extends Controller
 
     public function opayPaymentResponse(Request $request)
     {
-        $trans = Transaction::where("transaction_id", $request["transactionId"])->first();
-        if ($request["status"] != "SUCCESS") {
+        $trans = Transaction::where("transaction_id", $request["referenceId"])->first();
+
+        $status = strtoupper($request["status"]);
+        if ($status != "SUCCESS") {
             $trans->status = "FAILED";
             $trans->save();
             return response(["message" => "transaction failed"]);

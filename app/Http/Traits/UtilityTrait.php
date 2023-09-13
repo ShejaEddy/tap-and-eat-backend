@@ -39,23 +39,31 @@ trait UtilityTrait
 
     public function momoPay($tx_ref, $amount, $phoneNumber)
     {
-        $URL = "https://opay-api.oltranz.com/opay/paymentrequest";
-        $result = Http::post($URL, [
-            "telephoneNumber" => "25" . $phoneNumber,
+        $URL = " https://api.pay.ishema.rw/api/v1/transactions/initialize";
+        $result = Http::withHeaders(
+            [
+                'apiKey' => env("OPAY_API_KEY"),
+            ]
+        )->post($URL, [
+            "phoneNumber" => "25" . $phoneNumber,
             "amount" => $amount,
-            "organizationId" => env("OPAY_ORGANIZATION_ID"),
             "description" => "Payment",
             "callbackUrl" => env("BACKEND_HTTPS_URL") . "/api/opay/payment-response",
-            "transactionId" => $tx_ref
+            "referenceId" => $tx_ref,
+            "transfers" => [
+                "phoneNumber" => env("ADMIN_PHONE_NUMBER"),
+                "percentage" => 100,
+                "message" => "Receiver"
+            ]
         ]);
-        Log::info("MOMO PAYMENT RESPONSE: " . $result->body(), ['result' => $result, 'orgId' => env("OPAY_ORGANIZATION_ID")]);
+        Log::info("MOMO PAYMENT RESPONSE: ", ['result' => $result->body(), 'status' => $result->status()]);
 
         // check if request was successful
         if ($result->status() != 200) {
             return false;
         }
         $body = json_decode($result->body());
-        if ($body->status == "FAILED") {
+        if ($body->statusCode != 200) {
             return false;
         }
 
