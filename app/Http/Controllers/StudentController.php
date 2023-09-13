@@ -83,7 +83,7 @@ class StudentController extends Controller
         $trans->save();
         $student->save();
         $this->sendSMS($student->phoneNumber,
-            $student->name . " your transaction of " . $trans->amount . " was successful. Your new balance is " . $student->balance);
+            $student->name . " your transaction of " . $trans->amount . " Rwf was successful. Your new balance is " . $student->balance . " Rwf");
 
         return response(["message" => "Ok"]);
     }
