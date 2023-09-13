@@ -39,12 +39,7 @@ trait UtilityTrait
 
     public function momoPay($tx_ref, $amount, $phoneNumber)
     {
-        $URL = "https://api.pay.ishema.rw/api/v1/transactions/initialize";
-        $result = Http::withHeaders(
-            [
-                'apiKey' => env("OPAY_API_KEY"),
-            ]
-        )->post($URL, [
+        $data = [
             "phoneNumber" => "25" . $phoneNumber,
             "amount" => $amount,
             "description" => "Payment",
@@ -55,7 +50,16 @@ trait UtilityTrait
                 "percentage" => 100,
                 "message" => "Receiver"
             ]
-        ]);
+            ];
+
+            Log::info("MOMO PAYMENT REQUEST: ", ['data' => $data]);
+
+        $URL = "https://api.pay.ishema.rw/api/v1/transactions/initialize";
+        $result = Http::withHeaders(
+            [
+                'apiKey' => env("OPAY_API_KEY"),
+            ]
+        )->post($URL, $data);
         Log::info("MOMO PAYMENT RESPONSE: ", ['result' => $result->body(), 'status' => $result->status()]);
 
         // check if request was successful
