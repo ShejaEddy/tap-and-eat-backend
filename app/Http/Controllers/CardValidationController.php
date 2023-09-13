@@ -14,7 +14,8 @@ class CardValidationController extends Controller
      */
     public function index()
     {
-        //
+        $validations = CardValidation::latest()->get();
+        return  view("admin.validations.index", compact("validations"));
     }
 
     /**

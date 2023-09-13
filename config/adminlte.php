@@ -330,7 +330,7 @@ return [
 
             ],
         ],
-        ['header' => 'Students'],
+        ['header' => 'Reports'],
         [
             'text' => 'Students',
             'url' => 'students',
@@ -340,6 +340,11 @@ return [
             'text' => 'Transactions',
             'url' => 'transactions',
             'icon' => 'fas fa-fw fa-dollar-sign',
+        ],
+        [
+            'text' => 'Card Validations',
+            'url' => 'validations',
+            'icon' => 'fas fa-fw fa-check-circle',
         ],
         ['header' => 'account_settings'],
         [

@@ -50,7 +50,7 @@
             </div>
         </div><div class="col-md-3">
             <div class="card card-body bg-indigo text-center">
-                {{ $totalIncome }}
+                {{ $totalIncome }} Rwf
                 <p>Total Income</p>
             </div>
         </div>

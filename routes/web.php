@@ -21,6 +21,7 @@ Route::resource("/user", "UserController");
 Route::get("/profile", "UserController@edit")->name("profile");
 Route::get("/students", "StudentController@index")->name("students");
 Route::get("/transactions", "TransactionController@index")->name("transactions");
+Route::get("/validations", "CardValidationController@index")->name("validations");
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
