@@ -37,7 +37,7 @@ trait UtilityTrait
         return $body && $body->message == "0: Accepted for delivery";
     }
 
-    public function momoPay($tx_ref, $amount, $phoneNumber)
+    public function momoPay($tx_ref, $amount, $phoneNumber, $trx)
     {
         $data = [
             "amount" => +$amount,
@@ -75,7 +75,21 @@ trait UtilityTrait
 
         Log::info("MOMO PAYMENT RESPONSE: ", ['result' => $result->body(), 'status' => $result->status()]);
 
-        return true;
+        if ($result->status() != 200) {
+            return false;
+        }
+
+        $body = $result->body() ? json_decode($result->body()) : null;
+        $refId = $body ? $body->ref : null;
+        $trx->transaction_id = $refId;
+        $trx->save();
+
+        // check if trx body is pending
+        if ($body && $body->status == "pending") {
+            return true;
+        }
+
+        return false
     }
 
     public function pay($amount, $phoneNumber)
@@ -92,12 +106,13 @@ trait UtilityTrait
             ]
         );
 
-        $ok = $this->momoPay($transactionId, $amount, $phoneNumber);
+        $ok = $this->momoPay($transactionId, $amount, $phoneNumber, $trx);
         if (!$ok) {
             $trx->status = "FAILED";
             $trx->save();
             return false;
         }
+        return true;
     }
 
     public function verifyStudent($phoneNumber, $pin)
