@@ -73,7 +73,7 @@ class StudentController extends Controller
     public function opayPaymentResponse(Request $request)
     {
         Log::info("CALLBACK RESPONSE", $request->all());
-        $refId = $request->data->referenceId;
+        $refId = $request->data->ref;
         $status = $request->data->status;
         $event_kind = $request->event_kind;
 
