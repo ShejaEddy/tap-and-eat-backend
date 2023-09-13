@@ -31,14 +31,30 @@ class StudentController extends Controller
     {
         $validator= \validator()->make($request->all(),[
             'name' => 'required|string',
-            'phoneNumber' => 'required|unique:students',
-            'card' => 'required|unique:students',
+            'phoneNumber' => 'required|string',
+            'card' => 'required|string',
             'pin' => 'required|string',
         ]);
 
         if ($validator->fails()) {
             $response['response'] = $validator->messages();
             return response()->json($response, 400);
+        }
+
+        // check if phone number exists
+        $student = Student::where('phoneNumber', $request->phoneNumber)->first();
+
+        if ($student) {
+            $response['response'] = "Phone number already exists";
+            return response()->json($response, 401);
+        }
+
+        // check if card exists
+        $student = Student::where('card', $request->card)->first();
+
+        if ($student) {
+            $response['response'] = "Card already exists";
+            return response()->json($response, 403);
         }
 
         $pin = $request->pin;
