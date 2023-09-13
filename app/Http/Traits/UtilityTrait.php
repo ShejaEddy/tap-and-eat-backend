@@ -75,17 +75,7 @@ trait UtilityTrait
 
         Log::info("MOMO PAYMENT RESPONSE: ", ['result' => $result->body(), 'status' => $result->status()]);
 
-        // check if request body status is pending
-        if(json_decode($result->body()) && json_decode($result->body())->status == "pending")
-            return true;
-
-
-        // $body = json_decode($result->body());
-        // if ($body->statusCode != 200) {
-        //     return false;
-        // }
-
-        return false;
+        return true;
     }
 
     public function pay($amount, $phoneNumber)
