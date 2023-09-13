@@ -12,23 +12,23 @@
     <div class="row">
         <div class="col-md-3">
             <div class="card card-body bg-red text-center">
-                {{ $totalTransactions }}
-                <p>Total Transactions</p>
+                {{ $totalFailedTransactions }}
+                <p>Failed Transactions</p>
             </div>
         </div><div class="col-md-3 ">
-            <div class="card card-body bg-blue text-center">
-                {{ $totalTransactionsAmount }}
-                <p>Rwf Total Amount Earned</p>
-            </div>
-        </div><div class="col-md-3">
-            <div class="card card-body bg-indigo text-center">
-                {{ $todayTransactionsAmount }} Rwf
-                <p>Today's Transactions amount</p>
+            <div class="card card-body bg-warning text-center">
+                {{ $todayPendingTransactions }}
+                <p>Pending Transactions</p>
             </div>
         </div><div class="col-md-3">
             <div class="card card-body bg-green text-center">
+                {{ $totalSuccessfulTransactions }} ({{ $totalIncome }})
+                <p>Successfull Transactions</p>
+            </div>
+        </div><div class="col-md-3">
+            <div class="card card-blue bg-blue text-center">
                 {{ $studentsNumber}}
-                <p>Students number</p>
+                <p>Total Student</p>
             </div>
         </div>
     </div>

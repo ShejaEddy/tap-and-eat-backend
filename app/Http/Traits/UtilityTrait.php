@@ -49,14 +49,25 @@ trait UtilityTrait
             "transactionId" => $tx_ref
         ]);
         Log::info("MOMO PAYMENT RESPONSE: " . $result->body(), ['result' => $result, 'orgId' => env("OPAY_ORGANIZATION_ID")]);
+
+        // check if request was successful
+        if ($result->status() != 200) {
+            return false;
+        }
+        $body = json_decode($result->body());
+        if ($body->status == "FAILED") {
+            return false;
+        }
+
+        return true;
     }
 
     public function pay($amount, $phoneNumber)
     {
         $transactionId = uniqid();
         $student = Student::where('phoneNumber', $phoneNumber)->first();
-        $this->momoPay($transactionId, $amount, $phoneNumber);
-        Transaction::create(
+
+        $trx = Transaction::create(
             [
                 "phone_number" => $phoneNumber,
                 "transaction_id" => $transactionId,
@@ -64,6 +75,13 @@ trait UtilityTrait
                 "student_id" => $student->id
             ]
         );
+
+        $ok = $this->momoPay($transactionId, $amount, $phoneNumber);
+        if (!$ok) {
+            $trx->status = "FAILED";
+            $trx->save();
+            return false;
+        }
     }
 
     public function verifyStudent($phoneNumber, $pin)

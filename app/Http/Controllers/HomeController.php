@@ -23,10 +23,17 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $totalTransactionsAmount = \App\Transaction::sum("amount");
-        $todayTransactionsAmount = \App\Transaction::whereDate("created_at", date("Y-m-d"))->sum("amount");
-        $totalTransactions = \App\Transaction::count();
+        $totalFailedTransactions = \App\Transaction::where('status', 'FAILED')->count();
+        $todayPendingTransactions = \App\Transaction::where('status', 'PENDING')->sum();
+        $totalSuccessfulTransactions = \App\Transaction::where('status', 'SUCCESS')->sum();
+        $totalIncome = \App\Transaction::where('status', 'SUCCESS')->sum('amount');
         $studentsNumber = \App\Student::count();
-        return view('home', compact("totalTransactions", "totalTransactionsAmount", "todayTransactionsAmount", "studentsNumber"));
+        return view('home', compact(
+            'totalFailedTransactions',
+            'todayPendingTransactions',
+            'totalSuccessfulTransactions',
+            'totalIncome',
+            'studentsNumber'
+        ));
     }
 }
