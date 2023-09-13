@@ -89,7 +89,7 @@ trait UtilityTrait
             return true;
         }
 
-        return false
+        return false;
     }
 
     public function pay($amount, $phoneNumber)
