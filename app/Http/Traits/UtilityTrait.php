@@ -48,10 +48,15 @@ trait UtilityTrait
         Log::info("MOMO PAYMENT REQUEST: ", ['data' => $data, 'tx_ref' => $tx_ref, 'client_id' => env("OPAY_CLIENT_ID"), 'client_secret' => env("OPAY_CLIENT_SECRET")]);
 
         $auth_url = "https://payments.paypack.rw/api/auth/agents/authorize";
-        $auth_result = Http::post($auth_url, [
-            "client_id" => env("OPAY_CLIENT_ID"),
-            "client_secret" => env("OPAY_CLIENT_SECRET")
-        ]);
+        $auth_result = Http::withHeaders(
+            [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json'
+            ]
+        )->post($auth_url, [
+                "client_id" => env("OPAY_CLIENT_ID"),
+                "client_secret" => env("OPAY_CLIENT_SECRET")
+            ]);
 
         Log::info("MOMO PAYMENT AUTH RESPONSE: ", ['result' => $auth_result->body(), 'status' => $auth_result->status()]);
 
@@ -61,6 +66,7 @@ trait UtilityTrait
         $result = Http::withHeaders(
             [
                 'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
                 'Idempotency-Key' => $tx_ref,
                 'Authorization' => 'Bearer ' . $access_token,
                 'X-Webhook-Mode' => 'production'
