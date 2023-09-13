@@ -53,6 +53,8 @@ trait UtilityTrait
             "client_secret" => env("OPAY_CLIENT_SECRET")
         ]);
 
+        Log::info("MOMO PAYMENT AUTH RESPONSE: ", ['result' => $auth_result->body(), 'status' => $auth_result->status()]);
+
         $access_token = json_decode($auth_result->body())->access_token;
 
         $URL = "https://payments.paypack.rw/api/transactions/cashout";
