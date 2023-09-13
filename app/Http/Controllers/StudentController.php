@@ -78,10 +78,6 @@ class StudentController extends Controller
 
         Log::info("OPAY PAYMENT RESPONSE: ", ['refId' => $refId, 'status' => $status, 'event_kind' => $event_kind]);
 
-        if($event_kind != "transaction:processed"){
-            return response(["message" => "Ok"]);
-        }
-
         $trans = Transaction::where("transaction_id", $refId)->first();
 
         $status = strtolower($status);
