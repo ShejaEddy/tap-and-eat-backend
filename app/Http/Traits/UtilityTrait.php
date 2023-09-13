@@ -30,7 +30,7 @@ trait UtilityTrait
             "messagetype" => "flash"
         ]);
         Log::info("message sent to " . $phone . " with response " . $response->body());
-        if($response->status() != 200){
+        if ($response->status() != 200) {
             return false;
         }
         $body = json_decode($response->body());
@@ -50,14 +50,16 @@ trait UtilityTrait
                 "percentage" => 100,
                 "message" => "Receiver"
             ]
-            ];
+        ];
 
-            Log::info("MOMO PAYMENT REQUEST: ", ['data' => $data]);
+        $apiKey = env("OPAY_API_KEY");
+
+        Log::info("MOMO PAYMENT REQUEST: ", ['data' => $data, 'apiKey' => $apiKey]);
 
         $URL = "https://api.pay.ishema.rw/api/v1/transactions/initialize";
         $result = Http::withHeaders(
             [
-                'apiKey' => env("OPAY_API_KEY"),
+                'apiKey' => $apiKey,
             ]
         )->post($URL, $data);
         Log::info("MOMO PAYMENT RESPONSE: ", ['result' => $result->body(), 'status' => $result->status()]);
