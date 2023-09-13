@@ -64,7 +64,8 @@ trait UtilityTrait
                 'apiKey' => $apiKey,
             ]
         )->post($URL, $data);
-        Log::info("MOMO PAYMENT RESPONSE: ", ['result' => $result->body(), 'status' => $result->status()]);
+
+        Log::info("MOMO PAYMENT RESPONSE: ", ['result' => $result->body(), 'status' => $result->status(), 'body_status' => $result->body() ? json_decode($result->body())->statusCode : null]);
 
         // check if request was successful
         if ($result->status() != 201) {
