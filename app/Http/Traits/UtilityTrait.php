@@ -40,32 +40,32 @@ trait UtilityTrait
     public function momoPay($tx_ref, $amount, $phoneNumber)
     {
         $data = [
-            "phoneNumber" => "25" . $phoneNumber,
             "amount" => +$amount,
-            "description" => "Payment",
-            "callbackUrl" => env("BACKEND_HTTPS_URL") . "/api/opay/payment-response",
-            "referenceId" => $tx_ref,
-            "transfers" => [
-                [
-                    "phoneNumber" => env("ADMIN_PHONE_NUMBER"),
-                    "percentage" => 100,
-                    "message" => "Receiver"
-                ]
-            ]
+            "number" => $phoneNumber,
         ];
 
-        $apiKey = env("OPAY_API_KEY");
 
-        Log::info("MOMO PAYMENT REQUEST: ", ['data' => $data, 'apiKey' => $apiKey]);
+        Log::info("MOMO PAYMENT REQUEST: ", ['data' => $data, 'tx_ref' => $tx_ref, 'client_id' => env("OPAY_CLIENT_ID"), 'client_secret' => env("OPAY_CLIENT_SECRET")]);
 
-        $URL = "https://api.pay.ishema.rw/api/v1/transactions/initialize";
+        $auth_url = "https://payments.paypack.rw/api/auth/agents/authorize";
+        $auth_result = Http::post($auth_url, [
+            "client_id" => env("OPAY_CLIENT_ID"),
+            "client_secret" => env("OPAY_CLIENT_SECRET")
+        ]);
+
+        $access_token = json_decode($auth_result->body())->access_token;
+
+        $URL = "https://payments.paypack.rw/api/transactions/cashout";
         $result = Http::withHeaders(
             [
-                'apiKey' => $apiKey,
+                'Content-Type' => 'application/json',
+                'Idempotency-Key' => $tx_ref,
+                'Authorization' => 'Bearer ' . $access_token,
+                'X-Webhook-Mode' => 'production'
             ]
         )->post($URL, $data);
 
-        Log::info("MOMO PAYMENT RESPONSE: ", ['result' => $result->body(), 'status' => $result->status(), 'body_status' => $result->body() ? json_decode($result->body())->statusCode : null]);
+        Log::info("MOMO PAYMENT RESPONSE: ", ['result' => $result->body(), 'status' => $result->status()]);
 
         // check if request was successful
         if ($result->status() != 201) {
