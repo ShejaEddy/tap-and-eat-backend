@@ -12,7 +12,7 @@ class UssdController extends Controller
     {
         if (!$request->text)
             $request["text"] = "";
-        $request["sessionId"]=  "123452392393358020937022223";
+        // $request["sessionId"]=  "123452392393358020937022223";
 //        $request["phoneNumber"]=  $request["phoneNumber"];
         $ussd = Ussd::machine()
             ->setFromRequest([
