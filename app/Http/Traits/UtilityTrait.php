@@ -46,9 +46,11 @@ trait UtilityTrait
             "callbackUrl" => env("BACKEND_HTTPS_URL") . "/api/opay/payment-response",
             "referenceId" => $tx_ref,
             "transfers" => [
-                "phoneNumber" => env("ADMIN_PHONE_NUMBER"),
-                "percentage" => 100,
-                "message" => "Receiver"
+                [
+                    "phoneNumber" => env("ADMIN_PHONE_NUMBER"),
+                    "percentage" => 100,
+                    "message" => "Receiver"
+                ]
             ]
         ];
 
