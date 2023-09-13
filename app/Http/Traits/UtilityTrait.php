@@ -66,6 +66,7 @@ trait UtilityTrait
         if ($result->status() != 200) {
             return false;
         }
+
         $body = json_decode($result->body());
         if ($body->statusCode != 200) {
             return false;
