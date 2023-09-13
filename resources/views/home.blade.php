@@ -8,7 +8,6 @@
 
 @section('content')
     <p>Welcome back {{ explode(" ", auth()->user()->name)[0] }}.</p>
-{{--   Cards for  "totalTransactions", "totalTransactionsAmount", "todayTransactionsAmount", "studentsNumber"--}}
     <div class="row">
         <div class="col-md-3">
             <div class="card card-body bg-red text-center">
@@ -22,16 +21,40 @@
             </div>
         </div><div class="col-md-3">
             <div class="card card-body bg-green text-center">
-                {{ $totalSuccessfulTransactions }} ({{ $totalIncome }})
-                <p>Successfull Transactions</p>
+                {{ $totalSuccessfulTransactions }}
+                <p>Successful Transactions</p>
             </div>
         </div><div class="col-md-3">
-            <div class="card card-blue bg-blue text-center">
+            <div class="card card-body bg-blue text-center">
                 {{ $studentsNumber}}
                 <p>Total Student</p>
             </div>
         </div>
     </div>
+    {{--   Cards for  "totalValidatedCards", "activeCards", "inactiveCards", "totalIncome"--}}
+    <div class="row mt-3">
+        <div class="col-md-3">
+            <div class="card card-body bg-info text-center">
+                {{ $totalValidatedCards }}
+                <p>Validated Cards</p>
+            </div>
+        </div><div class="col-md-3 ">
+            <div class="card card-body bg-success text-center">
+                {{ $activeCards }}
+                <p>Active Cards</p>
+            </div>
+        </div><div class="col-md-3">
+            <div class="card card-body bg-danger text-center">
+                {{ $inactiveCards }}
+                <p>Inactive Cards</p>
+            </div>
+        </div><div class="col-md-3">
+            <div class="card card-body bg-indigo text-center">
+                {{ $totalIncome }}
+                <p>Total Income</p>
+            </div>
+        </div>
+
 
 @stop
 

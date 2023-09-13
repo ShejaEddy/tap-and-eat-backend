@@ -28,12 +28,21 @@ class HomeController extends Controller
         $totalSuccessfulTransactions = \App\Transaction::where('status', 'SUCCESS')->count();
         $totalIncome = \App\Transaction::where('status', 'SUCCESS')->sum('amount');
         $studentsNumber = \App\Student::count();
+
+        // get total validated cards, active cards, and inactive cards
+        $totalValidatedCards = \App\CardValidation::count();
+        $activeCards = \App\Student::where('balance', '>', 0)->count();
+        $inactiveCards = \App\Student::where('balance', 0)->count();
+
         return view('home', compact(
             'totalFailedTransactions',
             'todayPendingTransactions',
             'totalSuccessfulTransactions',
             'totalIncome',
-            'studentsNumber'
+            'studentsNumber',
+            'totalValidatedCards',
+            'activeCards',
+            'inactiveCards'
         ));
     }
 }
