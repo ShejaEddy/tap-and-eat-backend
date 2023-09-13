@@ -14,7 +14,7 @@ class ConfirmPaymentState extends State
         $amount = $this->record->get('topup_amount');
 
         $phoneNumber = $this->record->phoneNumber;
-        $this->menu->text('END Please, confirm payment on your phone number of ' . number_format($amount) . ' RWF');
+        $this->menu->text('END Please, confirm payment by dialing *182*7*1# on your phone number for a transaction of an amount of ' . number_format($amount) . ' RWF');
         $this->pay($amount, $phoneNumber);
     }
 
